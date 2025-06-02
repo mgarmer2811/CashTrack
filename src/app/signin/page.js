@@ -1,74 +1,87 @@
-"use client";
+"use client"
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import supabase from "../utils/supabaseClient";
+import { useState } from "react"
+import { useRouter } from "next/navigation"
+import supabase from "../utils/supabaseClient"
+import DollarIcon from "@/components/DollarIcon"
 
 export default function SignInPage() {
-    const router = useRouter();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [errorMsg, setErrorMsg] = useState("");
+  const router = useRouter()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [errorMsg, setErrorMsg] = useState("")
+  const [iconColor, setIconColor] = useState("#2563EB")
 
-    const handleSignIn = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setErrorMsg("");
+  const handleSignIn = async (e) => {
+    e.preventDefault()
+    setErrorMsg("")
 
-        const { data, error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
 
-        setLoading(false);
-        if (error) {
-            setErrorMsg(error.message);
-        } else {
-            router.push("/home");
-        }
-    };
+    if (error) {
+      setErrorMsg(error.message)
+    } else {
+      router.push("/home")
+    }
+  }
 
-    return (
-        <div className="max-w-md mx-auto p-8">
-            <h1 className="text-2xl font-bold mb-4">Sign In</h1>
-            <form onSubmit={handleSignIn} className="flex flex-col space-y-4">
-                <label className="flex flex-col">
-                    <span>Email</span>
-                    <input
-                        type="email"
-                        className="border rounded px-2 py-1"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </label>
-
-                <label className="flex flex-col">
-                    <span>Password</span>
-                    <input
-                        type="password"
-                        className="border rounded px-2 py-1"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </label>
-
-                <button
-                    type="submit"
-                    disabled={loading}
-                    className={`py-2 rounded text-white ${
-                        loading
-                            ? "bg-gray-400"
-                            : "bg-green-600 hover:bg-green-700"
-                    }`}
-                >
-                    {loading ? "Ingresando..." : "Sign In"}
-                </button>
-
-                {errorMsg && <p className="text-red-500">{errorMsg}</p>}
-            </form>
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
+        <div className="flex justify-center mb-6">
+          <DollarIcon />
         </div>
-    );
+        <h1
+          className="text-2xl font-bold text-center mb-2"
+          style={{ color: iconColor }}
+        >
+          CashTrack
+        </h1>
+        <p className="text-sm text-gray-500 text-center mb-6">
+          Introduce tus credenciales para continuar
+        </p>
+
+        <form onSubmit={handleSignIn} className="space-y-5">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full border border-gray-300 rounded-lg pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="w-full border border-gray-300 rounded-lg pr-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+
+          <button
+            type="submit"
+            className="w-full py-2 rounded-lg text-white font-bold bg-blue-600 hover:bg-blue-700"
+          >
+            Iniciar Sesión
+          </button>
+
+          {errorMsg && (
+            <p className="text-red-500 text-sm text-center">{errorMsg}</p>
+          )}
+        </form>
+
+        <p className="text-center text-sm text-gray-600 mt-6">
+          ¿No tienes una cuenta?{" "}
+          <a href="/signup" className="text-blue-600">
+            <u>Regístrate</u>
+          </a>
+        </p>
+      </div>
+    </div>
+  )
 }
