@@ -35,7 +35,7 @@ const CATEGORY_MAP = {
         icon: BubblesIcon,
     },
     7: {
-        name: "ENTRETENIMIENTO",
+        name: "OCIO",
         icon: PopcornIcon,
     },
     8: {

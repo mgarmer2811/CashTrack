@@ -34,7 +34,7 @@ export default function Footer() {
     ];
 
     return (
-        <footer className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg">
+        <footer className="fixed bottom-0 left-0 w-full bg-white border-t border-gray-200 shadow-lg z-10">
             <nav className="max-w-lg mx-auto flex justify-around py-2">
                 {tabs.map(({ href, Icon, label }) => {
                     const colorClass = isActive(href)
