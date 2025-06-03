@@ -1,5 +1,6 @@
-import { BookOpenIcon, HomeIcon } from "@heroicons/react/24/outline";
 import {
+    HouseIcon,
+    BookOpenIcon,
     BadgeIcon,
     PopcornIcon,
     BubblesIcon,
@@ -12,7 +13,7 @@ import {
 const CATEGORY_MAP = {
     1: {
         name: "VIVIENDA",
-        icon: HomeIcon,
+        icon: HouseIcon,
     },
     2: {
         name: "COMIDA Y COMPRAS(CASA)",

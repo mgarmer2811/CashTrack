@@ -7,7 +7,8 @@ import supabase from "../utils/supabaseClient";
 import ExpenseItem from "@/components/ExpenseItem";
 import Header from "@/components/Header";
 import { PlusIcon } from "lucide-react";
-import ExpenseModal from "@/components/ExpenseModal";
+import ExpenseCreateModal from "@/components/ExpenseCreateModal";
+import ExpenseMenuModal from "@/components/ExpenseMenuModal";
 
 export default function DashboardPage() {
     const router = useRouter();
@@ -18,6 +19,9 @@ export default function DashboardPage() {
     const [month, setMonth] = useState(today.getMonth() + 1);
     const [year, setYear] = useState(today.getFullYear());
     const [showModal, setShowModal] = useState(false);
+    const [showOptionModal, setShowOptionModal] = useState(false);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [selectedExpenseId, setSelectedExpenseId] = useState(null);
 
     let total = 0;
     for (const expense of expenses) {
@@ -47,6 +51,72 @@ export default function DashboardPage() {
         fetchExpenses();
     }, [user, loading, router, month, year]);
 
+    function getSelectedExpense() {
+        return expenses.find((exp) => exp.id === selectedExpenseId);
+    }
+
+    function handleExpenseClick(expenseId) {
+        setSelectedExpenseId(expenseId);
+        setShowOptionModal(true);
+    }
+
+    async function handleDeleteExpense() {
+        try {
+            const res = await fetch(
+                `https://cashtrackapi.onrender.com/api/expenses/${selectedExpenseId}`,
+                {
+                    method: "DELETE",
+                    headers: { "Content-Type": "application/json" },
+                }
+            );
+
+            if (!res.ok) {
+                throw new Error("Error al eliminar el gasto");
+            }
+
+            setExpenses((prev) =>
+                prev.filter((expense) => expense.id !== selectedExpenseId)
+            );
+        } catch (err) {
+            alert("No se pudo eliminar el gasto");
+            console.error(err);
+        } finally {
+            setShowOptionModal(false);
+            setSelectedExpenseId(null);
+        }
+    }
+
+    async function handleEditExpense({ category, quantity, date }) {
+        try {
+            const res = await fetch(
+                `https://cashtrackapi.onrender.com/api/expenses/${selectedExpenseId}`,
+                {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        category,
+                        quantity,
+                        created_at: date,
+                    }),
+                }
+            );
+            if (!res.ok) throw new Error("Error al editar gasto");
+            const updatedExpense = await res.json();
+
+            setExpenses((prev) =>
+                prev.map((exp) =>
+                    exp.id === selectedExpenseId ? updatedExpense : exp
+                )
+            );
+        } catch (err) {
+            alert("No se pudo actualizar el gasto");
+            console.error(err);
+        } finally {
+            setShowEditModal(false);
+            setSelectedExpenseId(null);
+        }
+    }
+
     if (loading) {
         return <p className="text-center mt-8">Cargando...</p>;
     }
@@ -73,9 +143,11 @@ export default function DashboardPage() {
                             {expenses.map((expense) => (
                                 <ExpenseItem
                                     key={expense.id}
+                                    id={expense.id}
                                     date={expense.created_at}
                                     category={expense.category}
                                     quantity={expense.quantity}
+                                    onClick={handleExpenseClick}
                                 />
                             ))}
                         </ul>
@@ -100,7 +172,7 @@ export default function DashboardPage() {
                 </button>
             </div>
             {showModal && (
-                <ExpenseModal
+                <ExpenseCreateModal
                     onClose={() => setShowModal(false)}
                     onAdd={async ({ category, quantity }) => {
                         try {
@@ -109,7 +181,7 @@ export default function DashboardPage() {
                                 {
                                     method: "POST",
                                     headers: {
-                                        "Content-Type": "application-json",
+                                        "Content-Type": "application/json",
                                     },
                                     body: JSON.stringify({
                                         userId: user.id,
@@ -120,8 +192,9 @@ export default function DashboardPage() {
                                 }
                             );
 
-                            if (!res.ok)
+                            if (!res.ok) {
                                 throw new Error("Error al guardar gasto");
+                            }
 
                             const newExpense = await res.json();
                             setExpenses((prev) => [newExpense, ...prev]);
@@ -130,6 +203,29 @@ export default function DashboardPage() {
                             console.error(err);
                         }
                     }}
+                />
+            )}
+            {showOptionModal && (
+                <ExpenseMenuModal
+                    onClose={() => {
+                        setShowOptionModal(false);
+                    }}
+                    onDelete={handleDeleteExpense}
+                    onEdit={() => {
+                        setShowOptionModal(false);
+                        setShowEditModal(true);
+                    }}
+                />
+            )}
+            {showEditModal && (
+                <ExpenseCreateModal
+                    onClose={() => {
+                        setShowEditModal(false);
+                    }}
+                    onUpdate={handleEditExpense}
+                    initialCategory={getSelectedExpense().category}
+                    initialAmount={getSelectedExpense().quantity}
+                    initialDate={getSelectedExpense().created_at}
                 />
             )}
         </div>

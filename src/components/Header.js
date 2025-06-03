@@ -18,7 +18,9 @@ export default function Header({ month, year, onChangeMonthYear, total }) {
     return (
         <header className="fixed top-0 left-0 w-full bg-white border-b border-gray-200 px-8 py-4 flex flex-row items-center justify-between z-10">
             <div className="flex flex-col">
-                <span className="text-gray-500 text-sm">{year}</span>
+                <span className="text-sm" style={{ color: "#2563EB" }}>
+                    {year}
+                </span>
                 <input
                     type="month"
                     value={monthValue}
@@ -44,7 +46,9 @@ export default function Header({ month, year, onChangeMonthYear, total }) {
                 `}</style>
             </div>
             <div className="flex flex-col items-center">
-                <span className="text-sm text-gray-500">Gastos</span>
+                <span className="text-sm" style={{ color: "#2563EB" }}>
+                    Gastos
+                </span>
                 <span className="text-xl font-bold text-gray-900">
                     €{total.toFixed(2)}
                 </span>
