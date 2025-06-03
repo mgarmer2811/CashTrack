@@ -19,7 +19,7 @@ export default function ExpenseItem({ date, category, quantity }) {
     const { icon: CategoryIcon } = categoryEntry;
 
     return (
-        <div className="p-4 bg-white rounded-lg shadow-lg border border-gray-200 mb-4">
+        <div className="w-full p-4 bg-white rounded-lg shadow-lg border border-gray-200 mb-4">
             <p className="text-xs text-gray-500">{dateText}</p>
             <div className="mt-1 flex items-center justify-between">
                 <div className="flex items-center space-x-2">
@@ -28,7 +28,7 @@ export default function ExpenseItem({ date, category, quantity }) {
                         {CategoryName}
                     </span>
                 </div>
-                <span className="text-sm font-semibold text-gray-900">
+                <span className="text-sm font-semibold text-gray-900 pl-40">
                     €{quantity.toFixed(2)}
                 </span>
             </div>
