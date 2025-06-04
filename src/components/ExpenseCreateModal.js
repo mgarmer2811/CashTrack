@@ -9,7 +9,6 @@ export default function ExpenseCreateModal({
     initialCategory,
     initialAmount,
     initialDate,
-    children,
 }) {
     const [selectedCategory, setSelectedCategory] = useState(
         initialCategory || null
@@ -44,14 +43,14 @@ export default function ExpenseCreateModal({
 
     return (
         <div className="fixed inset-0 flex items-center justify-center z-50">
-            <div className="bg-white p-6 rounded-lg w-full max-w-md relative">
+            <div className="bg-white p-6 rounded-2xl w-full max-w-md relative shadow-2xl">
                 <button
                     onClick={onClose}
                     className="absolute top-2 right-2 text-gray-500 hover:text-black"
                 >
                     <X />
                 </button>
-                <h2 className="text-xl font-bold mb-4 text-center">
+                <h2 className="text-xl font-semibold mb-4 text-center">
                     {initialCategory !== undefined
                         ? "Editar gasto"
                         : "Agregar gasto"}
@@ -74,14 +73,14 @@ export default function ExpenseCreateModal({
                                 setSelectedCategory(index + 1);
                                 setSelectedCategoryString(cat.name);
                             }}
-                            className={`flex flex-col items-center justify-center p-3 rounded border transition-colors ${
+                            className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-colors ${
                                 selectedCategoryString === cat.name
                                     ? "bg-blue-100 border-blue-600"
                                     : "bg-gray-100 border-gray-200"
                             }`}
                         >
                             <cat.icon className="w-6 h-6 mb-1" />
-                            <span className="text-sm text-center">
+                            <span className="text-xs text-center">
                                 {cat.name}
                             </span>
                         </button>

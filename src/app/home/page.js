@@ -10,7 +10,7 @@ import { PlusIcon } from "lucide-react";
 import ExpenseCreateModal from "@/components/ExpenseCreateModal";
 import ExpenseMenuModal from "@/components/ExpenseMenuModal";
 
-export default function DashboardPage() {
+export default function Home() {
     const router = useRouter();
     const { user, loading } = useAuth();
     const [expenses, setExpenses] = useState([]);
@@ -157,16 +157,16 @@ export default function DashboardPage() {
                             await supabase.auth.signOut();
                             router.push("/signin");
                         }}
-                        className="mb-6 bg-blue-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                        className="mb-6 bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-red-700"
                     >
-                        Sign Out
+                        Cerrar sesión
                     </button>
                 </main>
                 <button
                     onClick={() => {
                         setShowModal(true);
                     }}
-                    className="fixed bottom-16 right-6 w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 z-10"
+                    className="fixed bottom-16 right-6 w-14 h-14 bg-blue-600 rounded-full flex items-center justify-center text-white shadow-2xl hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 z-10"
                 >
                     <PlusIcon className="w-6 h-6" />
                 </button>
