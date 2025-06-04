@@ -155,15 +155,6 @@ export default function Home() {
                             ))}
                         </ul>
                     )}
-                    <button
-                        onClick={async () => {
-                            await supabase.auth.signOut();
-                            router.push("/signin");
-                        }}
-                        className="mb-6 bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-red-700"
-                    >
-                        Cerrar sesión
-                    </button>
                 </main>
                 <button
                     onClick={() => {
