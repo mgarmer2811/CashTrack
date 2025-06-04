@@ -1,3 +1,4 @@
+// app/page.jsx (Home)
 "use client";
 
 import { useEffect, useState } from "react";
@@ -18,6 +19,7 @@ export default function Home() {
     const today = new Date();
     const [month, setMonth] = useState(today.getMonth() + 1);
     const [year, setYear] = useState(today.getFullYear());
+    const [selectedCategory, setSelectedCategory] = useState(null);
     const [showModal, setShowModal] = useState(false);
     const [showOptionModal, setShowOptionModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -37,9 +39,11 @@ export default function Home() {
         const fetchExpenses = async () => {
             setFetching(true);
             try {
-                const response = await fetch(
-                    `https://cashtrackapi.onrender.com/api/expenses?userId=${user.id}&month=${month}&year=${year}`
-                );
+                let url = `https://cashtrackapi.onrender.com/api/expenses?userId=${user.id}&month=${month}&year=${year}`;
+                if (selectedCategory) {
+                    url += `&category=${selectedCategory}`;
+                }
+                const response = await fetch(url);
                 const data = await response.json();
                 setExpenses(data);
             } catch (error) {
@@ -49,7 +53,7 @@ export default function Home() {
             }
         };
         fetchExpenses();
-    }, [user, loading, router, month, year]);
+    }, [user, loading, router, month, year, selectedCategory]);
 
     function getSelectedExpense() {
         return expenses.find((exp) => exp.id === selectedExpenseId);
@@ -69,11 +73,9 @@ export default function Home() {
                     headers: { "Content-Type": "application/json" },
                 }
             );
-
             if (!res.ok) {
                 throw new Error("Error al eliminar el gasto");
             }
-
             setExpenses((prev) =>
                 prev.filter((expense) => expense.id !== selectedExpenseId)
             );
@@ -102,7 +104,6 @@ export default function Home() {
             );
             if (!res.ok) throw new Error("Error al editar gasto");
             const updatedExpense = await res.json();
-
             setExpenses((prev) =>
                 prev.map((exp) =>
                     exp.id === selectedExpenseId ? updatedExpense : exp
@@ -132,6 +133,8 @@ export default function Home() {
                         setYear(newY);
                     }}
                     total={total}
+                    selectedCategory={selectedCategory}
+                    onChangeCategory={setSelectedCategory}
                 />
                 <main className="flex-grow max-w-lg mx-auto p-8 mt-20">
                     {fetching ? (
@@ -191,11 +194,9 @@ export default function Home() {
                                     }),
                                 }
                             );
-
                             if (!res.ok) {
                                 throw new Error("Error al guardar gasto");
                             }
-
                             const newExpense = await res.json();
                             setExpenses((prev) => [newExpense, ...prev]);
                         } catch (err) {
