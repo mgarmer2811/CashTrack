@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import supabase from "../utils/supabaseClient";
 import DollarIcon from "@/components/DollarIcon";
 
-export default function SignInPage() {
+export default function User() {
     const router = useRouter();
 
     return (
