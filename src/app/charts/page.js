@@ -32,15 +32,11 @@ export default function Charts() {
     const today = new Date();
     const [year, setYear] = useState(today.getFullYear());
     const [month, setMonth] = useState(today.getMonth() + 1);
-    const [selectedCategory, setSelectedCategory] = useState(null);
-    const [showCategoryModal, setShowCategoryModal] = useState(false);
     const [expenses, setExpenses] = useState([]);
     const [fetching, setFetching] = useState(true);
 
     useEffect(() => {
-        if (loading) {
-            return;
-        }
+        if (loading) return;
         if (!user) {
             router.push("/signin");
             return;
@@ -57,10 +53,6 @@ export default function Charts() {
                     url += `&year=${year}`;
                 }
 
-                if (selectedCategory) {
-                    url += `&category=${selectedCategory}`;
-                }
-
                 const res = await fetch(url);
                 const data = await res.json();
                 setExpenses(data);
@@ -72,12 +64,11 @@ export default function Charts() {
         };
 
         fetchExpenses();
-    }, [user, loading, router, periodType, month, year, selectedCategory]);
+    }, [user, loading, router, periodType, month, year]);
 
     if (loading) {
         return <p className="text-center mt-8">Cargando...</p>;
     }
-
     if (!user) {
         return null;
     }
@@ -85,9 +76,7 @@ export default function Charts() {
     const pieData = Object.values(
         expenses.reduce((acc, e) => {
             const cat = CATEGORY_COLORS_MAP[e.category];
-            if (!cat) {
-                return acc;
-            }
+            if (!cat) return acc;
             if (!acc[e.category]) {
                 acc[e.category] = {
                     name: cat.name,
@@ -112,9 +101,8 @@ export default function Charts() {
                 value: { year: thisYear, month: thisMonth },
             });
 
-            var pmYear = thisYear;
-            var pmMonth = thisMonth - 1;
-
+            let pmYear = thisYear;
+            let pmMonth = thisMonth - 1;
             if (pmMonth === 0) {
                 pmYear -= 1;
                 pmMonth = 12;
@@ -124,9 +112,8 @@ export default function Charts() {
                 value: { year: pmYear, month: pmMonth },
             });
 
-            var y = pmYear;
-            var m = pmMonth;
-
+            let y = pmYear;
+            let m = pmMonth;
             const monthNames = [
                 "Ene",
                 "Feb",
@@ -141,7 +128,6 @@ export default function Charts() {
                 "Nov",
                 "Dic",
             ];
-
             for (let i = 0; i < 4; i++) {
                 m -= 1;
                 if (m === 0) {
@@ -149,7 +135,7 @@ export default function Charts() {
                     m = 12;
                 }
                 array.push({
-                    label: `${monthNames[m - 1]}${y}`,
+                    label: `${monthNames[m - 1]} ${y}`,
                     value: { year: y, month: m },
                 });
             }
@@ -157,7 +143,6 @@ export default function Charts() {
             const thisYear = today.getFullYear();
             array.push({ label: "Este año", value: { year: thisYear } });
             array.push({ label: "Año pasado", value: { year: thisYear - 1 } });
-
             for (let i = 2; i < 6; i++) {
                 array.push({
                     label: `${thisYear - i}`,
@@ -229,16 +214,6 @@ export default function Charts() {
                     })}
                 </div>
             </div>
-            <div className="px-8 py-4">
-                <button
-                    onClick={() => setShowCategoryModal(true)}
-                    className="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200"
-                >
-                    {selectedCategory
-                        ? `Categoría: ${CATEGORY_COLORS_MAP[selectedCategory].name}`
-                        : "Seleccionar categoría"}
-                </button>
-            </div>
             <div className="px-8 py-4 h-64">
                 {fetching ? (
                     <p className="text-center">Cargando gráfico…</p>
@@ -269,7 +244,7 @@ export default function Charts() {
                 )}
             </div>
             <div className="px-8 py-4 space-y-4">
-                {fetching ? null : expenses.length === 0 ? null : (
+                {!fetching && expenses.length > 0 && (
                     <ul className="space-y-4">
                         {expenses.map((expense) => (
                             <ExpenseItem
@@ -282,40 +257,6 @@ export default function Charts() {
                     </ul>
                 )}
             </div>
-            {showCategoryModal && (
-                <div className="fixed inset-0 flex items-center justify-center z-50">
-                    <div className="bg-white rounded-lg w-80 max-w-full p-6">
-                        <h2 className="text-lg font-semibold mb-4">
-                            Seleccionar Categoría
-                        </h2>
-                        <div className="grid grid-cols-2 gap-4">
-                            {Object.entries(CATEGORY_COLORS_MAP).map(
-                                ([catId, { name }]) => (
-                                    <button
-                                        key={catId}
-                                        onClick={() => {
-                                            setSelectedCategory(Number(catId));
-                                            setShowCategoryModal(false);
-                                        }}
-                                        className="px-3 py-2 bg-gray-100 rounded hover:bg-gray-200 text-left"
-                                    >
-                                        {name}
-                                    </button>
-                                )
-                            )}
-                            <button
-                                onClick={() => {
-                                    setSelectedCategory(null);
-                                    setShowCategoryModal(false);
-                                }}
-                                className="col-span-2 mt-4 px-3 py-2 bg-red-100 rounded hover:bg-red-200 text-center"
-                            >
-                                Quitar filtro
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            )}
         </div>
     );
 }
