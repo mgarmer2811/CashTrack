@@ -1,25 +1,25 @@
 {
-  "name": "cashtrack",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@heroicons/react": "^2.2.0",
-    "@supabase/supabase-js": "^2.49.8",
-    "cashtrack": "file:",
-    "lucide-react": "^0.511.0",
-    "next": "15.3.3",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "recharts": "^2.15.3"
-  },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4",
-    "tailwindcss": "^4"
-  }
+    "name": "cashtrack",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@heroicons/react": "^2.2.0",
+        "@supabase/supabase-js": "^2.49.8",
+        "cashtrack": "file:",
+        "lucide-react": "^0.511.0",
+        "next": "15.3.3",
+        "react": "^19.0.0",
+        "react-dom": "^19.0.0",
+        "recharts": "^2.15.3"
+    },
+    "devDependencies": {
+        "@tailwindcss/postcss": "^4",
+        "tailwindcss": "^4"
+    }
 }
