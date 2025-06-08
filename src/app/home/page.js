@@ -10,6 +10,7 @@ import Header from "@/components/Header";
 import { PlusIcon } from "lucide-react";
 import ExpenseCreateModal from "@/components/ExpenseCreateModal";
 import ExpenseMenuModal from "@/components/ExpenseMenuModal";
+import Footer from "@/components/Footer";
 
 export default function Home() {
     const router = useRouter();
@@ -165,6 +166,7 @@ export default function Home() {
                     <PlusIcon className="w-6 h-6" />
                 </button>
             </div>
+            <Footer />
             {showModal && (
                 <ExpenseCreateModal
                     onClose={() => setShowModal(false)}

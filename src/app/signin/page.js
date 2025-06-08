@@ -25,6 +25,7 @@ export default function SignInPage() {
 
         if (error) {
             setErrorMsg(error.message);
+            console.log(error.message);
         } else {
             router.push("/home");
         }
@@ -80,7 +81,7 @@ export default function SignInPage() {
 
                     {errorMsg && (
                         <p className="text-red-500 text-sm text-center">
-                            {errorMsg}
+                            Credenciales incorrectas
                         </p>
                     )}
                 </form>

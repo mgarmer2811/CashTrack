@@ -12,6 +12,7 @@ import {
     Legend,
     ResponsiveContainer,
 } from "recharts";
+import Footer from "@/components/Footer";
 
 const CATEGORY_COLORS_MAP = {
     1: { name: "VIVIENDA", color: "#4F46E5" },
@@ -257,6 +258,7 @@ export default function Charts() {
                     </ul>
                 )}
             </div>
+            <Footer />
         </div>
     );
 }

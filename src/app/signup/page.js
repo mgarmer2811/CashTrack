@@ -28,6 +28,7 @@ export default function SignUpPage() {
         setLoading(false);
         if (error) {
             setErrorMsg(error.message);
+            console.log(error.message);
         } else {
             alert("¡Registro exitoso! Revisa tu correo para confirmar.");
             router.push("/signin");
@@ -67,7 +68,7 @@ export default function SignUpPage() {
                         <PasswordIcon pcolor={iconColor} />
                         <input
                             type="password"
-                            placeholder="Password (mínimo 6 caracteres)"
+                            placeholder="Password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
@@ -90,7 +91,7 @@ export default function SignUpPage() {
 
                     {errorMsg && (
                         <p className="text-red-500 text-sm text-center">
-                            {errorMsg}
+                            Ha ocurrido un error
                         </p>
                     )}
                 </form>

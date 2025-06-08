@@ -1,6 +1,5 @@
 import "../app/styles/globals.css";
 import { AuthProvider } from "./utils/AuthProvider";
-import Footer from "@/components/Footer";
 
 export const metadata = {
     title: "CashTrack",
@@ -12,7 +11,6 @@ export default function RootLayout({ children }) {
         <html lang="en">
             <body className="relative pb-16">
                 <AuthProvider>{children}</AuthProvider>
-                <Footer />
             </body>
         </html>
     );
